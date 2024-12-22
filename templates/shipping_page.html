@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Details</title>
+    <!-- Add Font Awesome CDN for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .product-details {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .quantity-container button {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 10px;
+            color: #333;
+            border-radius: 50%;
+        }
+
+        .quantity-container input {
+            width: 30px;
+            text-align: center;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #0e0101;
+            border-radius: 8px;
+            margin: 0;
+            
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        textarea {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 100%;
+            height: 100px;
+            resize: vertical;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .product-description {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .card {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .card-body {
+            padding: 0;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Shipping Details for {{ product.name }}</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="product-details">
+                    <h2 class="product-name">{{ product.name }}</h2>
+                    <p class="product-price"><strong>Price: ${{ "%.2f"|format(product.price) }}</strong></p>
+                    <p class="product-description">{{ product.description }}</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('shipping_details', product_id=product.id) }}">
+                    <!-- Quantity Incrementer -->
+                    <div class="input-group quantity-container">
+                        <button type="button" onclick="decreaseQuantity()">
+                            <i class="fas fa-minus"></i> <!-- Minus icon -->
+                        </button>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="100" readonly>
+                        <button type="button" onclick="increaseQuantity()">
+                            <i class="fas fa-plus"></i> <!-- Plus icon -->
+                        </button>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="form-group">
+                        <label for="address">Shipping Address:</label>
+                        <textarea id="address" name="address" required></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn">Place Your Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function increaseQuantity() {
+            var quantity = document.getElementById("quantity");
+            quantity.value = parseInt(quantity.value) + 1;
+        }
+
+        function decreaseQuantity() {
+            var quantity = document.getElementById("quantity");
+            if (quantity.value > 1) {
+                quantity.value = parseInt(quantity.value) - 1;
+            }
+        }
+    </script>
+
+</body>
+</html>

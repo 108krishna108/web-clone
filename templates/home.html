@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClipKart</title>
+    <!-- Bootstrap CDN for responsive grid and buttons -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Ensure the container and row are properly spaced */
+        .container {
+            margin-top: 20px;
+        }
+
+        /* Style for the product cards */
+        .card {
+            border: 1px solid #ddd; /* Add a subtle border to the card */
+            border-radius: 8px; /* Rounded corners */
+            overflow: hidden; /* Hide any overflowing content */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+        }
+
+        /* Hover effect on product cards */
+        .card:hover {
+            transform: translateY(-5px); /* Slight lift effect */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* More intense shadow on hover */
+        }
+
+        /* Style for the card title and description */
+        .card-title {
+            font-size: 1.2rem; /* Slightly larger font for product names */
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #555; /* Slightly lighter color for descriptions */
+        }
+
+        /* Style for the "Add to Cart" button */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        /* Edit link styling */
+        .edit-link {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .edit-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Header styling */
+        header {
+            margin-bottom: 30px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between; /* Aligns the children to the left and right */
+            align-items: center; /* Vertically centers the items */
+            padding: 10px 20px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        /* Logout link styling */
+        .logout-link {
+            color: rgb(247, 8, 8);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex; /* Makes the icon and text appear on the same line */
+            align-items: center; /* Vertically centers the text and icon */
+        }
+
+        .logout-link i {
+            margin-right: 8px; /* Adds some space between the icon and text */
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+        header h7{
+            font-family: cursive;
+            font-style: italic;
+            font-size: small;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h7>
+            {% if session.get('is_admin') %}
+                You are logged in as Admin.
+            {% endif %}
+        </h7>
+        <h1>ClipKart</h1>
+            <a href="/logout" class="logout-link">
+                <i class="fas fa-sign-out-alt"></i>Logout
+            </a>
+    </header>
+    
+    <div class="container">
+        <!-- Assuming "products" is available in the context -->
+        {% if products %}
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">{{ product.description }}</p>
+                                <p class="card-text"><strong>Price: ${{ "%.2f"|format(product.price) }}</strong></p>
+                                <a href="{{ url_for('shipping_details', product_id=product.id) }}" class="btn btn-primary">Buy Now</a>
+                                {% if session.get('is_admin') %}
+                                    <a href="{{ url_for('edit_product') }}" class="edit-link">Edit</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No products available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

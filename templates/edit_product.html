@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        td input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* td input[type="number"] {
+            -moz-appearance: textfield; /* Hide spinner in number inputs */
+
+        td button {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        td button:hover {
+            background-color: #218838;
+        }
+
+        /* Style for the form rows */
+        form {
+            display: contents; /* Makes the form elements appear like normal table cells */
+        }
+
+        /* Add some space at the bottom of the page */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Edit Products</h1>
+
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Edit</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <!-- Form is inside the loop so each product has its own form -->
+            <form method="POST" action="{{ url_for('update_product', product_id=product.id) }}">
+                <td><input type="text" name="name" value="{{ product.name }}"></td>
+                <td><input type="text" name="description" value="{{ product.description }}"></td>
+                <td><input type="number" name="price" value="{{ product.price }}" step="0.01"></td>
+                <td><button type="submit">Save</button></td>
+            </form>
+        </tr>
+        {% endfor %}
+    </table>
+    <h2>Add New Product</h2>
+<form method="POST" action="{{ url_for('add_product') }}" onsubmit="return validateForm()">
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Save</th>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value=""></td>
+            <td><input type="text" name="description" value=""></td>
+            <td><input type="number" name="price" value="" step="0.01"></td>
+            <td><button type="submit">Save</button></td>
+        </tr>
+    </table>
+</form>
+
+    <footer>
+        <p>&copy; 2024 ClipKart. All rights reserved.</p>
+    </footer>
+<script>
+    function validateForm() {
+        // Get form fields
+        var name = document.getElementsByName("name")[0].value;
+        var description = document.getElementsByName("description")[0].value;
+        var price = document.getElementsByName("price")[0].value;
+
+        // Check if any field is empty
+        if (name === "" || description === "" || price === "") {
+            // Show alert
+            alert("Please fill all the details before adding a new product.");
+            return false;  // Prevent form submission
+        }
+
+        return true;  // Allow form submission if all fields are filled
+    }
+</script>
+</body>
+</html>
