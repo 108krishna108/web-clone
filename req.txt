@@ -1,3 +1,4 @@
 flask
 flask-sqlalchemy
 werkzeug
+gunicorn==20.1.0
